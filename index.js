@@ -1,3 +1,4 @@
+var proxy = require('http-proxy');
 var server = new proxy.RoutingProxy();
 
 module.exports = function (allow) {
