@@ -1,0 +1,16 @@
+{
+    "name": "proxy",
+    "description": "proxy",
+    "version": "0.0.0",
+    "author": {
+        "name": "serandives",
+        "email": "serandives@gmail.com"
+    },
+    "dependencies": {
+        "http-proxy": "0.10.3"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/serandules/proxy.git"
+    }
+}
