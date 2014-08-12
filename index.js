@@ -8,14 +8,22 @@ module.exports = function (allow) {
             xhost = xhost.split(':');
             var host = xhost[0];
             var port = xhost.length === 2 ? xhost[1] : 80;
-            if (allow[host] != port) {
+            var drones = allow[host];
+            if (drones || !drones.length) {
                 res.send(404, 'Not Found');
                 return;
             }
-            console.log('proxing request to host: ' + host + ' port: ' + port);
+            var nxt = drones.next;
+            if (nxt >= drones.length) {
+                nxt = (drones.next = 0);
+            } else {
+                drones.next++;
+            }
+            var drone = drones[nxt];
+            console.log('proxing request to host: ' + drone.host + ' port: ' + drone.port);
             server.proxyRequest(req, res, {
-                host: host,
-                port: port
+                host: drone.host,
+                port: drone.port
             });
             return;
         }
