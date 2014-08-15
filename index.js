@@ -21,7 +21,7 @@ module.exports = function (allow) {
             var drone = drones[drones.next++];
             console.log('proxing request to host: ' + drone.ip + ' port: ' + drone.port);
             server.proxyRequest(req, res, {
-                ip: drone.ip,
+                host: drone.ip,
                 port: drone.port
             });
             return;
