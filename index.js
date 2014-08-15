@@ -15,13 +15,10 @@ module.exports = function (allow) {
                 res.send(404, 'Not Found');
                 return;
             }
-            var nxt = drones.next;
-            if (nxt >= drones.length) {
-                nxt = (drones.next = 0);
-            } else {
-                drones.next++;
+            if (!drones.next || (drones.next >= drones.length)) {
+                drones.next = 0;
             }
-            var drone = drones[nxt];
+            var drone = drones[drones.next++];
             console.log('proxing request to host: ' + drone.ip + ' port: ' + drone.port);
             server.proxyRequest(req, res, {
                 ip: drone.ip,
