@@ -1,6 +1,11 @@
 var proxy = require('http-proxy');
 var server = new proxy.RoutingProxy();
 
+/**
+ *
+ * @param allow object { 'auto.serandives.com': [{ ip: '127.0.0.1', port: 4000 }]
+ * @returns {Function}
+ */
 module.exports = function (allow) {
     return function (req, res, next) {
         var xhost = req.header('x-host');
@@ -20,9 +25,9 @@ module.exports = function (allow) {
                 drones.next++;
             }
             var drone = drones[nxt];
-            console.log('proxing request to host: ' + drone.host + ' port: ' + drone.port);
+            console.log('proxing request to host: ' + drone.ip + ' port: ' + drone.port);
             server.proxyRequest(req, res, {
-                host: drone.host,
+                ip: drone.ip,
                 port: drone.port
             });
             return;
