@@ -12,6 +12,8 @@ module.exports = function (allow) {
         if (host) {
             var drones = allow[host];
             if (!drones || !drones.length) {
+                console.log('proxy info not found for host : ' + host);
+                console.log(allow);
                 res.send(404, 'Not Found');
                 return;
             }
