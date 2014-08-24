@@ -7,12 +7,9 @@ var server = new proxy.RoutingProxy();
  * @returns {Function}
  */
 module.exports = function (allow) {
-    console.log('===========================status 2===========================');
     return function (req, res, next) {
-        console.log('===========================status 3===========================');
         var host = req.header('x-host');
         if (host) {
-            console.log('===========================status 4===========================');
             var drones = allow[host];
             if (!drones || !drones.length) {
                 console.log('proxy info not found for host : ' + host);
