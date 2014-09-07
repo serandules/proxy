@@ -3,7 +3,7 @@ var server = new proxy.RoutingProxy();
 
 /**
  *
- * @param allow object { 'auto.serandives.com': [{ ip: '127.0.0.1', port: 4000 }]
+ * @param allow object { 'autos.serandives.com': [{ ip: '127.0.0.1', port: 4000 }]
  * @returns {Function}
  */
 module.exports = function (allow) {
