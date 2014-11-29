@@ -1,5 +1,5 @@
-var proxy = require('http-proxy');
-var server = new proxy.RoutingProxy();
+var httpProxy = require('http-proxy');
+var proxy = httpProxy.createProxyServer();
 
 /**
  *
@@ -22,9 +22,11 @@ module.exports = function (allow) {
             }
             var drone = drones[drones.next++];
             console.log('proxing request to host: ' + drone.ip + ' port: ' + drone.port);
-            server.proxyRequest(req, res, {
-                host: drone.ip,
-                port: drone.port
+            proxy.web(req, res, {
+                target: {
+                    host: drone.ip,
+                    port: drone.port
+                }
             });
             return;
         }
