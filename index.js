@@ -9,7 +9,8 @@ var proxy = httpProxy.createProxyServer();
 module.exports = function (allow) {
     return function (req, res, next) {
         var host = req.header('x-host');
-        if (host) {
+        if (host || /^\/apis\/.*/.test(req.path)) {
+            host = host || req.header('host');
             var drones = allow[host];
             if (!drones || !drones.length) {
                 console.log('proxy info not found for host : ' + host);
