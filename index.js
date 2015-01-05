@@ -1,3 +1,4 @@
+var debug = require('debug')('serandules-proxy');
 var httpProxy = require('http-proxy');
 var proxy = httpProxy.createProxyServer();
 
@@ -13,8 +14,8 @@ module.exports = function (allow) {
             host = host || req.header('host');
             var drones = allow[host];
             if (!drones || !drones.length) {
-                console.log('proxy info not found for host : ' + host);
-                console.log(allow);
+                debug('proxy info not found for host : ' + host);
+                debug(allow);
                 res.send(404, 'Not Found');
                 return;
             }
@@ -22,7 +23,7 @@ module.exports = function (allow) {
                 drones.next = 0;
             }
             var drone = drones[drones.next++];
-            console.log('proxing request to host: ' + drone.ip + ' port: ' + drone.port);
+            debug('proxing request to host: ' + drone.ip + ' port: ' + drone.port);
             proxy.web(req, res, {
                 target: {
                     host: drone.ip,
