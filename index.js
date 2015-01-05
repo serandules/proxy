@@ -1,4 +1,4 @@
-var debug = require('debug')('serandules-proxy');
+var debug = require('debug')('serandules:proxy');
 var httpProxy = require('http-proxy');
 var proxy = httpProxy.createProxyServer();
 
