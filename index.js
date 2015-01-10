@@ -32,6 +32,7 @@ module.exports = function (allow) {
             });
             return;
         }
+        debug('non matching url pattern');
         next();
     }
 };
