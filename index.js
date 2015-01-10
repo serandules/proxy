@@ -1,6 +1,5 @@
 var debug = require('debug')('serandules:proxy');
 var httpProxy = require('http-proxy');
-var proxy = httpProxy.createProxyServer();
 
 /**
  *
@@ -8,6 +7,17 @@ var proxy = httpProxy.createProxyServer();
  * @returns {Function}
  */
 module.exports = function (allow) {
+    var proxy = httpProxy.createProxyServer();
+
+    proxy.on('error', function (err, req, res) {
+        res.writeHead(500, {
+            'Content-Type': 'application/json'
+        });
+        res.end(JSON.stringify({
+            error: 'proxy error'
+        }));
+    });
+
     return function (req, res, next) {
         var host = req.header('x-host');
         if (host || /^\/apis\/.*/.test(req.path)) {
