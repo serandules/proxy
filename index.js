@@ -18,10 +18,15 @@ module.exports = function (allow) {
         }));
     });
 
+    var extract = function (host) {
+        var index = host.indexOf(':');
+        return index !== -1 ? host.substring(0, index) : host;
+    };
+
     return function (req, res, next) {
         var host = req.header('x-host');
         if (host || /^\/apis\/.*/.test(req.path)) {
-            host = host || req.header('host');
+            host = extract(host || req.header('host'));
             var drones = allow[host];
             if (!drones || !drones.length) {
                 debug('proxy info not found for host : ' + host);
