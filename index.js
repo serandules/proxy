@@ -1,5 +1,6 @@
 var debug = require('debug')('serandules:proxy');
 var httpProxy = require('http-proxy');
+var http = require('http');
 
 /**
  *
@@ -7,7 +8,9 @@ var httpProxy = require('http-proxy');
  * @returns {Function}
  */
 module.exports = function (allow) {
-    var proxy = httpProxy.createProxyServer();
+    var proxy = httpProxy.createProxyServer({
+        agent: http.globalAgent
+    });
 
     proxy.on('error', function (err, req, res) {
         res.writeHead(500, {
