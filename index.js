@@ -9,7 +9,7 @@ var http = require('http');
  */
 module.exports = function (allow) {
     var proxy = httpProxy.createProxyServer({
-        agent: http.globalAgent
+        procevent: http.globalAgent
     });
 
     proxy.on('error', function (err, req, res) {
