@@ -1,4 +1,4 @@
-var log = require('logger')('proxer:index');
+var log = require('logger')('proxy:index');
 var httpProxy = require('http-proxy');
 var http = require('http');
 
@@ -31,7 +31,7 @@ var update = function (self, id, domain, ip, port, done) {
     }
     var star = domain.indexOf('*.');
     if (star === 0) {
-        return done(id, domain.substring(star), ip, port);
+        return done(id, domain.substring(2), ip, port);
     }
     if (domain === host) {
         return done(id, domain, ip, port);
