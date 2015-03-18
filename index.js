@@ -24,12 +24,53 @@ proxy.on('error', function (err, req, res) {
     }));
 });
 
-var prxy = function (host, id, ip, port) {
+var update = function (self, id, domain, ip, port, done) {
+    if (domain === self) {
+        log.debug('skipping self domain proxying:%s', domain);
+        return;
+    }
+    var star = domain.indexOf('*.');
+    if (star === 0) {
+        return done(id, domain.substring(star), ip, port);
+    }
+    if (domain === host) {
+        return done(id, domain, ip, port);
+    }
+    log.debug('skipping non balancing proxying:%s', domain);
+};
+
+var joined = function (id, host, ip, port) {
+    log.debug('drone joined id:%s, domain:%s, ip:%s, port:%s', id, host, ip, port);
     var drones = hosts[host] || (hosts[host] = []);
     drones.push({
         id: id,
         ip: ip,
         port: port
+    });
+};
+
+var left = function (id, host, ip, port) {
+    log.debug('drone left id:%s, domain:%s, ip:%s, port:%s', id, host, ip, port);
+    var drones = hosts[host] || (hosts[host] = []);
+    drones.every(function (drone, i) {
+        if (drone.id !== id) {
+            return true;
+        }
+        drones.splice(i, 1);
+        return false;
+    });
+};
+
+var rejoined = function (id, host, ip, port) {
+    log.debug('drone rejoined id:%s, domain:%s, ip:%s, port:%s', id, host, ip, port);
+    var drones = hosts[host] || (hosts[host] = []);
+    drones.every(function (drone, i) {
+        if (drone.id !== id) {
+            return true;
+        }
+        drone.ip = ip;
+        drone.port = port;
+        return false;
     });
 };
 
@@ -66,30 +107,14 @@ module.exports.listen = function (self, io) {
     host = self.substring(2);
 
     io.on('joined', function (id, domain, ip, port) {
-        log.debug('drone joined id:%s, domain:%s, ip:%s, port:%s', id, domain, ip, port);
-        if (domain === self) {
-            log.debug('skipping self domain proxying:%s', domain);
-            return;
-        }
-        var star = domain.indexOf('*.');
-        if (star === 0) {
-            return prxy(domain.substring(star), id, ip, port);
-        }
-        if (domain === host) {
-            return prxy(domain, id, ip, port);
-        }
-        log.debug('skipping non balancing proxying:%s', domain);
+        update(self, id, domain, ip, port, joined);
     });
 
     io.on('left', function (id, domain, ip, port) {
-        log.debug('drone left id:%s, domain:%s, ip:%s, port:%s', id, domain, ip, port);
-        var drones = hosts[domain] || (hosts[domain] = []);
-        drones.every(function (drone, i) {
-            if (drone.id !== id) {
-                return true;
-            }
-            drones.splice(i, 1);
-            return false;
-        });
+        left(id, domain, ip, port);
+    });
+
+    io.on('rejoined', function (id, domain, ip, port) {
+        update(self, id, domain, ip, port, rejoined);
     });
 };
