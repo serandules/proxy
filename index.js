@@ -80,7 +80,7 @@ module.exports = function (req, res, next) {
         host = extract(host || req.header('host'));
         var drones = hosts[host];
         if (!drones || !drones.length) {
-            log.debug('proxy info not found for host : ' + host);
+            log.debug('proxy info not found for host:%s', host);
             log.debug(hosts);
             res.status(404).send('Not Found');
             return;
@@ -89,7 +89,7 @@ module.exports = function (req, res, next) {
             drones.next = 0;
         }
         var drone = drones[drones.next++];
-        log.debug('proxying request to host: ' + drone.ip + ' port: ' + drone.port);
+        log.debug('proxying request to host:%s, port:%s', drone.ip, drone.port);
         proxy.web(req, res, {
             target: {
                 host: drone.ip,
