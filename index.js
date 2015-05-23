@@ -98,7 +98,7 @@ module.exports = function (req, res, next) {
         });
         return;
     }
-    log.debug('non matching url pattern');
+    log.debug('non proxying url:%s', req.path);
     next();
 };
 
