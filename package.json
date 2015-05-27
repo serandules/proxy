@@ -1,0 +1,9 @@
+{
+    "name": "proxy",
+    "version": "0.0.0",
+    "description": "proxy",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/serandules/proxy.git"
+    }
+}
