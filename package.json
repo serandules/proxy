@@ -2,6 +2,9 @@
     "name": "proxy",
     "version": "0.0.0",
     "description": "proxy",
+    "dependencies": {
+        "logger": "serandules/logger#master"
+    },
     "repository": {
         "type": "git",
         "url": "git://github.com/serandules/proxy.git"
