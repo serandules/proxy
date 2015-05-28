@@ -3,6 +3,7 @@
     "version": "0.0.0",
     "description": "proxy",
     "dependencies": {
+        "http-proxy": "1.*",
         "logger": "serandules/logger#master"
     },
     "repository": {
