@@ -75,7 +75,7 @@ var rejoined = function (id, host, ip, port) {
 };
 
 module.exports = function (req, res, next) {
-    var host = req.header('x-host');
+    var host = req.header('X-Host');
     if (host || /^\/apis\/.*/.test(req.path)) {
         host = extract(host || req.header('host'));
         var drones = hosts[host];
